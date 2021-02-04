@@ -3,62 +3,56 @@
 
   // ADD CODE HERE!
 
-//**************** GRABING NODES FROM DOM ******************/ 
 
-const movesUl = document.querySelector('#moves-container')  
-const movesBtn = document.querySelector('#move-button')  
+  // ************ Grab elements off the DOM ************
+const body = document.querySelector('body')
+const movesUl = document.querySelector("#moves-container")
+const moveBtn = document.querySelector("#move-button")
 
-//**************** ADD AND HANDLE EVENTS ******************/ 
-document.addEventListener("keydown", handleArrowPress)
-// movesBtn.addEventListener("click", moveRobot)
-movesBtn.addEventListener("click", autoMoveRobot)
+//  **************** ADD and Handle Events ************
+body.addEventListener("keydown", handleKeyDownEvent)
+// moveBtn.addEventListener("click", moveRobot)
+moveBtn.addEventListener("click", autoMoveRobot)
 
 
-function handleArrowPress(e){
-  if (e.code === "ArrowRight"){
-    createLi("Right")
-  }else if (e.code === "ArrowLeft"){
-    createLi("Left")
-  }else if (e.code === "ArrowUp"){ 
-    createLi("Up")
-  }else if (e.code === "ArrowDown"){ 
-    createLi("Down")
+function handleKeyDownEvent(e){
+  if (e.code === "ArrowLeft"){
+    createDirectionLi("Left")
+  }else if (e.code === "ArrowRight"){
+    createDirectionLi("Right")
+  }else if (e.code === "ArrowDown"){
+    createDirectionLi("Down")
+  }else if (e.code === "ArrowUp"){
+    createDirectionLi("Up")
   }
 }
 
+// ***************** Logic and DOM manipulation *******************
 
-// ********************* MANIPULATE OR CHANGE DOM ********************
-
-
-function createLi(direction){
-  let li = document.createElement('li')
-  li.innerText = direction
+function createDirectionLi(direction){
+  const li = document.createElement("li")
+  li.textContent = direction
 
   movesUl.append(li)
 }
 
 
-// function moveRobot(e) {
-//   let moveLi = movesUl.querySelector('li')
+function moveRobot(){ 
+  let li = movesUl.querySelector("li")  
   
-//   move(moveLi.innerText.toLowerCase())
-//   moveLi.remove()
-// }
+  move(li.innerText.toLowerCase())
+  li.remove()
+}
 
 
-function autoMoveRobot() {
-  let moveTime = setInterval(addRobot, 1000);  
-  
-  
-  function addRobot(){
+function autoMoveRobot(){
+  let intervalTimer = setInterval(addRobotMovement, 500)
+
+  function addRobotMovement(){
     if (movesUl.children.length === 0){
-      clearInterval(moveTime)
-      console.log("hi");
+      clearInterval(intervalTimer)
     }else{
-      let moveLi = movesUl.querySelector('li')
-      move(moveLi.innerText.toLowerCase())
-      moveLi.remove()
+      moveRobot()
     }
   }
 }
-
